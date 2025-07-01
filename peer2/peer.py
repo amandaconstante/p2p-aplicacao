@@ -4,7 +4,7 @@ import os
 import time
 import threading
 
-TRACKER_IP = '127.0.0.1' ### alterar para lab
+TRACKER_IP = '10.20.180.107' ### alterar para lab
 TRACKER_PORTA = 9010
 PEER_PORTA = 10002
 
@@ -31,7 +31,7 @@ def pedir_peers(sock_udp, peer_ip):
     dados, _ = sock_udp.recvfrom(4096)
     lista = json.loads(dados.decode())
 
-    print(f"[PEER] Recebidos {len(lista)} peers: ")
+    print(f"[PEER] Conectado com {len(lista)} peers: ")
     for peer in lista:
         print(f"IP: {peer['peer'][0]}, Porta: {peer['peer'][1]}, Arquivos: {peer['arquivos']}")
     return lista
@@ -106,10 +106,15 @@ def baixar_arq_mais_raro(lista_peers, arquivos_atuais):
                 sock_tcp.close()
                 return # Após um download para
             except Exception as e:
-                print(f"[ERRO] Falha ao baixar arquivo de {ip}{porta}. Erro: {e}")
+                print(f"[ERRO] Falha ao baixar arquivo de {ip}:{porta}. Erro: {e}")
                 continue
 
-
+def sincroniza_arquivos(sock_tracker, peer_ip):
+    while True:
+        lista_peers = pedir_peers(sock_tracker, peer_ip)
+        arquivos_atuais = listar_arquivos()
+        baixar_arq_mais_raro(lista_peers, arquivos_atuais)
+        time.sleep(5)
 
 def main():
     sock_udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -121,15 +126,21 @@ def main():
 
     registrar_no_tracker(sock_udp, peer_ip)
     time.sleep(1)
-    time.sleep(1)
     lista_peers = pedir_peers(sock_udp, peer_ip)
 
     #baixar mais raro (1x ao iniciar)
     arquivos_atuais = listar_arquivos()
-    baixar_arq_mais_raro(lista_peers, arquivos_atuais)
+    # baixar_arq_mais_raro(lista_peers, arquivos_atuais)
 
     # Inicia atualização contínuda com o Tracker
-    atualiza_tracker(sock_udp, peer_ip)
+    # atualiza_tracker(sock_udp, peer_ip)
+
+    threading.Thread(target=atualiza_tracker, args=(sock_udp, peer_ip), daemon=True).start()
+
+    # peers procurando pacotes
+    threading.Thread(target=sincroniza_arquivos, args=(sock_udp, peer_ip), daemon=True).start()
 
 if __name__ == "__main__":
     main()
+    while True:
+        time.sleep(1)

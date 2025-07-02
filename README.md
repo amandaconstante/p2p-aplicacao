@@ -28,7 +28,7 @@ Este projeto implementa uma aplicação peer-to-peer (P2P) para compartilhamento
    - O Tracker ficará escutando conexões na porta 9010.
 
 **4. Passos para rodar cada Peer:**
-   - Em cada máquina de peer, vá até o terminal do diretório do respectivo peer (ex: `peer1/`, `peer2/` etc).
+   - Em cada máquina de peer, vá até o terminal do diretório do respectivo peer (`peer1/`, `peer2/` e `peer3/`).
    - Verifique se existem arquivos `.txt` no diretório.
    - Execute:
 

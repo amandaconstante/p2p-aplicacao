@@ -1,5 +1,5 @@
 # Aplicação P2P com Sockets
-## _Trabalho final - Disciplina de Redes de Computadores_
+### _Trabalho final - Disciplina de Redes de Computadores_
 
 Este projeto implementa uma aplicação peer-to-peer (P2P) para compartilhamento de arquivos .txt entre peers, utilizando sockets UDP e TCP em Python.
 

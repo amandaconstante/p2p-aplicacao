@@ -12,7 +12,7 @@ Este projeto implementa uma aplicação peer-to-peer (P2P) para compartilhamento
 
 **2. Download do projeto:**
 
-   - No diretório: `https://github.com/amandaconstante/RecipeBookApp/tree/RecipeApp` realize o passo Download Zip.
+   - No diretório: `https://github.com/amandaconstante/p2p-aplicacao` realize o passo Download Zip.
    - Coloque o `tracker.py` em uma máquina (servidor).
    - Coloque os diretórios `peer1`, `peer2` e `peer3` em outras 3 máquinas distintas.
 

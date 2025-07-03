@@ -4,7 +4,7 @@ import os
 import time
 import threading
 
-TRACKER_IP = '10.20.180.107' ### alterar para lab
+TRACKER_IP = '127.0.0.1' ### alterar para lab
 TRACKER_PORTA = 9010
 PEER_PORTA = 10002
 
@@ -99,7 +99,7 @@ def baixar_arq_mais_raro(lista_peers, arquivos_atuais):
                         break
                     conteudo += parte
 
-                    # salva arquivo recebido
+                # salva arquivo recebido
                 with open(arquivo_raro, "wb") as f:
                     f.write(conteudo)
                 print(f"[DOWNLOAD] Arquivo '{arquivo_raro}' salvo com sucesso!\n")
@@ -128,16 +128,11 @@ def main():
     time.sleep(1)
     lista_peers = pedir_peers(sock_udp, peer_ip)
 
-    #baixar mais raro (1x ao iniciar)
     arquivos_atuais = listar_arquivos()
-    # baixar_arq_mais_raro(lista_peers, arquivos_atuais)
-
-    # Inicia atualização contínuda com o Tracker
-    # atualiza_tracker(sock_udp, peer_ip)
 
     threading.Thread(target=atualiza_tracker, args=(sock_udp, peer_ip), daemon=True).start()
 
-    # peers procurando pacotes
+    # peers continuam procurando/verificando pacotes das conexões
     threading.Thread(target=sincroniza_arquivos, args=(sock_udp, peer_ip), daemon=True).start()
 
 if __name__ == "__main__":

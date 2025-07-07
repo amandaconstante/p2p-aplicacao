@@ -28,7 +28,7 @@ def remove_inativos():
 threading.Thread(target=remove_inativos, daemon=True).start()
 
 while True: 
-    data, addr = trackerSocket.recvfrom(4096)
+    data, addr = trackerSocket.recvfrom(4096) # dados brutos, ip + prota de origem
     msg = json.loads(data.decode())
 
     peer_ip = addr[0]
@@ -36,7 +36,6 @@ while True:
     peer_id = (peer_ip, peer_porta)
 
     if msg["type"] == "register":
-      #  peer_id = tuple(msg["peer"])
         arquivos = msg["arquivos"]
         peers[peer_id] = {
             "arquivos": arquivos,
@@ -45,13 +44,11 @@ while True:
         print(f"[TRACKER] Peer registrado: {peer_id} com arquivos {arquivos}")
 
     elif msg["type"] == "get_peers":
-       # solicitante = tuple(msg["peer"])
         solicitante = peer_id
         lista = [
             {"peer": list(k), "arquivos": v["arquivos"]}
             for k, v in peers.items()
             if k != solicitante
         ]
-        
         trackerSocket.sendto(json.dumps(lista[:3]).encode(), addr)
         print(f"[TRACKER] Enviou lista de peers para {solicitante}")

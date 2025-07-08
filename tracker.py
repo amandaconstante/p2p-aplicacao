@@ -3,8 +3,6 @@ import json
 import time
 import threading
 
-# dicionário
-# formato: `{(ip, porta): ["a.txt", "b.txt"]}`
 peers = {}
 TIMEOUT = 10 # segundos sem atualização do peer, considera desconectado
 

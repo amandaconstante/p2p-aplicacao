@@ -99,7 +99,6 @@ def baixar_arq_mais_raro(lista_peers, arquivos_atuais):
                         break
                     conteudo += parte
 
-                # salva arquivo recebido
                 with open(arquivo_raro, "wb") as f:
                     f.write(conteudo)
                 print(f"[DOWNLOAD] Arquivo '{arquivo_raro}' salvo com sucesso!\n")
